@@ -1,7 +1,6 @@
 from datetime import date
 from pydantic import BaseModel, Field
 
-
 class ExtractedItem(BaseModel):
     title: str
     deliverable_date: date
