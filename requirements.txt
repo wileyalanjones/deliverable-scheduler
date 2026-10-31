@@ -6,5 +6,4 @@ sqlalchemy
 pymupdf
 python-docx
 pydantic
-transformers
-torch
+requests

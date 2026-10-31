@@ -11,7 +11,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.parsing.base import extract_text
-from app.extraction.local_llm import LocalLLMExtractor
+from app.extraction.factory import get_extractor
 from app.database import SessionLocal, Base, engine
 from app.models import (
     User,
@@ -79,7 +79,7 @@ async def upload(file: UploadFile = File(...)):
     data = await file.read()
     file_type = file.filename.split(".")[-1].lower()
     text = extract_text(data, file_type)
-    items = LocalLLMExtractor().extract(text)
+    items = get_extractor().extract(text)
 
     db = SessionLocal()
     document = Document(
