@@ -2,16 +2,16 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 
 engine = create_engine(
-    "sqlite:///./app.db", 
+    "sqlite:///./app.db",
     connect_args={"check_same_thread": False},
-    echo=True)
+)
 
 SessionLocal = sessionmaker(
-    autocommit=False, 
+    autocommit=False,
     autoflush=False,
-    bind=engine
-    )
+    bind=engine,
+)
+
 
 class Base(DeclarativeBase):
     pass
-

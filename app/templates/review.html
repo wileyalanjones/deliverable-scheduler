@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Review Deliverables</title>
+</head>
+<body>
+    <h1>Extracted Deliverables</h1>
+
+    {% if items %}                    
+        {% for item in items %}       
+            <div style="border:1px solid #ccc; margin:10px; padding:10px;">
+                <strong>{{ item.title }}</strong>
+                <p>Due: {{ item.deliverable_date }}</p>
+                <p>Confidence: {{ item.confidence }}</p>
+
+                {% if item.source_quote %}   
+                    <p><em>"{{ item.source_quote }}"</em></p>
+                {% endif %}
+
+                <form action="/items/{{ item.id }}/approve" method="post">
+                    <button>Approve</button>
+                </form>
+                <form action="/items/{{ item.id }}/reject" method="post">
+                    <button>Reject</button>
+                </form>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Nothing to review.</p>
+    {% endif %}
+
+    <p><a href="/">Upload another document</a></p>
+</body>
+</html>

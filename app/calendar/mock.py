@@ -11,6 +11,6 @@ class MockCalendarProvider:
         return f"mock-{self._counter}"
 
     def list_events(self):
-        ...
+        return self.events 
 
     

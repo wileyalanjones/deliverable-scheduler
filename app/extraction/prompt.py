@@ -20,10 +20,6 @@ If there are no deliverables, return an empty array [].
 Do not output any text outside the JSON array."""
 
 
-def build_prompt(text: str) -> str:
-    return f"{INSTRUCTIONS}\n\nDOCUMENT:\n---\n{text}\n---"
-
-
 def build_messages(text: str) -> list[dict]:
     return [
         {"role": "system", "content": INSTRUCTIONS},
