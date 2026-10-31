@@ -8,11 +8,14 @@ from fastapi import (
 )
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.parsing.base import extract_text
 from app.extraction.local_llm import LocalLLMExtractor
 from app.database import SessionLocal, Base, engine
 from app.models import (
+    User,
+    AuthProvider,
     Document,
     FileType,
     FileStatus,
@@ -24,8 +27,20 @@ from app.calendar.mock import MockCalendarProvider
 
 app = FastAPI()
 templates = Jinja2Templates(directory="app/templates")
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
 calendar = MockCalendarProvider()
 Base.metadata.create_all(bind=engine)
+
+
+db = SessionLocal()
+demo_user = db.query(User).first()
+if demo_user is None:
+    demo_user = User(email="demo@example.com", auth_provider=AuthProvider.DEMO)
+    db.add(demo_user)
+    db.commit()
+    db.refresh(demo_user)
+DEMO_USER_ID = demo_user.id
+db.close()
 
 @app.get("/")
 def upload_page(request: Request):
@@ -68,6 +83,7 @@ async def upload(file: UploadFile = File(...)):
 
     db = SessionLocal()
     document = Document(
+        user_id = DEMO_USER_ID,
         filename = file.filename,
         file_type = FileType(file_type),
         status = FileStatus.PARSED,

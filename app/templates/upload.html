@@ -4,13 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deliverable Scheduler</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Deliverable Scheduler</h1>
+            <nav>
+                <a href="/review">Review</a>
+                <a href="/calendar">Calendar</a>
+            </nav>
+        </header>
 
-<form action="/upload" method="POST" enctype="multipart/form-data">
-
-  <label for="file-upload">Choose a file to upload:</label>
-  <input type="file" id="file-upload" name="file">
-
-  <button type="submit">Submit File</button>
-</form>
+        <form class="upload-box" action="/upload" method="POST" enctype="multipart/form-data">
+            <label for="file-upload">Choose a document (PDF, DOCX, or EML)</label>
+            <input type="file" id="file-upload" name="file">
+            <button class="btn-primary" type="submit">Extract deadlines</button>
+        </form>
+    </div>
+</body>
 </html>

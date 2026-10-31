@@ -1,34 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Review Deliverables</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <h1>Extracted Deliverables</h1>
+    <div class="container">
+        <header>
+            <h1>Extracted Deliverables</h1>
+            <nav>
+                <a href="/">Upload</a>
+                <a href="/calendar">Calendar</a>
+            </nav>
+        </header>
 
-    {% if items %}                    
-        {% for item in items %}       
-            <div style="border:1px solid #ccc; margin:10px; padding:10px;">
-                <strong>{{ item.title }}</strong>
-                <p>Due: {{ item.deliverable_date }}</p>
-                <p>Confidence: {{ item.confidence }}</p>
-
-                {% if item.source_quote %}   
-                    <p><em>"{{ item.source_quote }}"</em></p>
-                {% endif %}
-
-                <form action="/items/{{ item.id }}/approve" method="post">
-                    <button>Approve</button>
-                </form>
-                <form action="/items/{{ item.id }}/reject" method="post">
-                    <button>Reject</button>
-                </form>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>Nothing to review.</p>
-    {% endif %}
-
-    <p><a href="/">Upload another document</a></p>
+        {% if items %}
+            {% for item in items %}
+                <div class="card">
+                    <h2>{{ item.title }}</h2>
+                    <p class="meta">Due: {{ item.deliverable_date }} &middot; Confidence: {{ item.confidence }}</p>
+                    {% if item.source_quote %}
+                        <p class="quote">"{{ item.source_quote }}"</p>
+                    {% endif %}
+                    <div class="actions">
+                        <form action="/items/{{ item.id }}/approve" method="post" style="display:inline;">
+                            <button class="btn-approve" type="submit">Approve</button>
+                        </form>
+                        <form action="/items/{{ item.id }}/reject" method="post" style="display:inline;">
+                            <button class="btn-reject" type="submit">Reject</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="empty">Nothing to review.</p>
+        {% endif %}
+    </div>
 </body>
 </html>

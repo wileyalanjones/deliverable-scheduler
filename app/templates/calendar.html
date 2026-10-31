@@ -1,23 +1,34 @@
 <!DOCTYPE html>
-<html>
-<head><title>Calendar</title></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
 <body>
-    <h1>Your Calendar (mock)</h1>
+    <div class="container">
+        <header>
+            <h1>Calendar <small>(mock)</small></h1>
+            <nav>
+                <a href="/">Upload</a>
+                <a href="/review">Review</a>
+            </nav>
+        </header>
 
-    {% if events %}
-        {% for event in events %}
-            <div style="border:1px solid #ccc; margin:10px; padding:10px;">
-                <strong>{{ event.title }}</strong>
-                <p>Due: {{ event.date }}</p>
-                {% if event.description %}
-                    <p>{{ event.description }}</p>
-                {% endif %}
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No events yet.</p>
-    {% endif %}
-
-    <p><a href="/">Upload another document</a> · <a href="/review">Review</a></p>
+        {% if events %}
+            {% for event in events %}
+                <div class="card">
+                    <h2>{{ event.title }}</h2>
+                    <p class="meta">Due: {{ event.date }}</p>
+                    {% if event.description %}
+                        <p class="meta">{{ event.description }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="empty">No events yet.</p>
+        {% endif %}
+    </div>
 </body>
 </html>
