@@ -28,5 +28,24 @@
             <button class="btn-primary" type="submit">Extract deadlines</button>
         </form>
     </div>
+
+    <script>
+        var form = document.querySelector("form");
+        var button = form.querySelector("button");
+
+        form.addEventListener("submit", function () {
+            button.disabled = true;
+            button.textContent = "Extracting\u2026";
+        });
+
+        // When the browser restores this page from its back/forward cache,
+        // reset the button back to its initial state.
+        window.addEventListener("pageshow", function (event) {
+            if (event.persisted) {
+                button.disabled = false;
+                button.textContent = "Extract deadlines";
+            }
+        });
+    </script>
 </body>
 </html>

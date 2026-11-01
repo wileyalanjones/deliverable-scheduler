@@ -27,6 +27,7 @@ from app.calendar.mock import MockCalendarProvider
 
 app = FastAPI()
 templates = Jinja2Templates(directory="app/templates")
+templates.env.auto_reload = True
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 calendar = MockCalendarProvider()
 Base.metadata.create_all(bind=engine)

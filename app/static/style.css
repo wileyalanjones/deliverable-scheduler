@@ -147,3 +147,31 @@ button {
   padding: 10px 14px;
   margin-bottom: 16px;
 }
+
+.upload-box button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.loading {
+  display: block;
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
