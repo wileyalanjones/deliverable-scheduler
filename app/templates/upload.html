@@ -16,6 +16,12 @@
             </nav>
         </header>
 
+        {% if error == "empty" %}
+            <p class="error">Please choose a file to upload.</p>
+        {% elif error %}
+            <p class="error">Unsupported file type: "{{ error }}". Please upload a PDF, DOCX, or EML.</p>
+        {% endif %}
+
         <form class="upload-box" action="/upload" method="POST" enctype="multipart/form-data">
             <label for="file-upload">Choose a document (PDF, DOCX, or EML)</label>
             <input type="file" id="file-upload" name="file">

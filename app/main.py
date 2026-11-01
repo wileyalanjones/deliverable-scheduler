@@ -44,7 +44,8 @@ db.close()
 
 @app.get("/")
 def upload_page(request: Request):
-    return templates.TemplateResponse(request, "upload.html", {})
+    error = request.query_params.get("error")
+    return templates.TemplateResponse(request, "upload.html", {"error": error})
 
 
 @app.get("/health")
@@ -73,11 +74,21 @@ def calendar_view(request: Request):
 
 
 @app.post("/upload")
-async def upload(file: UploadFile = File(...)):
-    if file.filename is None:
-        raise HTTPException(status_code=400, detail="No filename provided")
+async def upload(file: UploadFile | None = None):
+    if file is None or not file.filename:                 
+        return RedirectResponse("/?error=empty", status_code=303)
+
     data = await file.read()
+    if not data:               
+        return RedirectResponse("/?error=empty", status_code=303)
+
     file_type = file.filename.split(".")[-1].lower()
+
+    try:
+        FileType(file_type)
+    except ValueError:
+        return RedirectResponse(f"/?error={file_type}", status_code=303)
+
     text = extract_text(data, file_type)
     items = get_extractor().extract(text)
 
