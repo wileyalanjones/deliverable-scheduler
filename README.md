@@ -145,9 +145,6 @@ run.py               # entry point
   are out of scope here.
 - **Deferred**: authentication, and a real calendar integration.
 
-## How AI was used
-
-[...]
 
 ## Limitations & next steps
 
@@ -156,5 +153,3 @@ run.py               # entry point
   interface — improves accuracy.
 - The mock calendar is in-memory and resets on restart (approved items persist in the
   database).
-
-Time spent: [...]  Next I'd investigate: [...]
