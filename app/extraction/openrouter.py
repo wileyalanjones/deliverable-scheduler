@@ -33,7 +33,7 @@ class OpenRouterExtractor(Extractor):
         payload = {
             "model": self.model,
             "messages": build_messages(text),
-            "max_tokens": 1000,
+            "max_tokens": 2048,
         }
 
         response = requests.post(

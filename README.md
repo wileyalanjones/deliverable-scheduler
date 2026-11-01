@@ -6,6 +6,10 @@ Upload a contract, email, or report (PDF, DOCX, or EML). A model finds every del
 date in it, you review and approve the ones that matter, and the approved items land on a
 calendar.
 
+> **Live demo**: https://deliverable-scheduler.onrender.com/ — a hosted instance using the
+> OpenRouter backend. Use it to try the app instantly with no local setup. (First load can
+> take ~30–60s while the free tier wakes up.)
+
 ## How it works
 
 1. **Upload** a document (PDF / DOCX / EML).
@@ -20,18 +24,27 @@ calendar.
 
 ## Extraction backends
 
-The extractor is pluggable; the app picks a backend based on configuration:
+The extractor is pluggable. The app prefers a hosted model and falls back to a bundled
+local one:
 
-- **Local model (default)** — a bundled `Qwen/Qwen2.5-0.5B-Instruct` runs entirely on your
-  machine, with no API key or network cost. This backend needs the optional dependencies
-  (`torch`, `transformers`); the ~1 GB model downloads on first use.
-- **Hosted model (optional)** — set the `OPENROUTER_API_KEY` environment variable (and
-  optionally `OPENROUTER_MODEL`, default `openai/gpt-4o-mini`) and the app calls OpenRouter
-  instead. No model download, better accuracy, at a small per-call cost.
+- **Hosted model (primary)** — set the `OPENROUTER_API_KEY` environment variable (and
+  optionally `OPENROUTER_MODEL`, default `openai/gpt-4o-mini`) and the app calls OpenRouter.
+  No model download, higher accuracy, at a small per-call cost. This is what the
+  [live demo](https://deliverable-scheduler.onrender.com/) uses.
+- **Local model (optional, limited)** — without a key, the app runs a bundled
+  `Qwen/Qwen2.5-0.5B-Instruct` entirely on your machine (no API key or network cost). It's
+  provided for running locally without any paid service, but it's less accurate and
+  occasionally returns empty `source_quote`s. Needs the optional dependencies (`torch`,
+  `transformers`); the ~1 GB model downloads on first use.
 
-When no key is configured, the app uses the local model.
+When `OPENROUTER_API_KEY` is set, the hosted model is used; otherwise the app falls back
+to the local model.
 
 ## Quickstart
+
+**Fastest**: open the [live demo](https://deliverable-scheduler.onrender.com/) — no setup.
+
+To run locally:
 
 ```bash
 # 1. create + activate a virtual environment
@@ -41,18 +54,43 @@ source .venv/bin/activate
 # 2. install dependencies
 pip install -r requirements.txt
 
-# 3. (optional) install the local-model backend
-pip install torch transformers
-
-# 4. run
+# 3. run
 python run.py
 ```
 
 Open http://localhost:8000 and upload a document.
 
-> Note: with the local model, the first upload downloads the model (~1 GB) and runs on
-> CPU, so the first extraction can take a minute or two. Set `OPENROUTER_API_KEY` to skip
-> this and use the hosted model instead.
+Choose a backend:
+
+- **Hosted (recommended)** — `export OPENROUTER_API_KEY=sk-or-...` before running. Best
+  accuracy, no model download. Optionally set `OPENROUTER_MODEL` to override the default
+  `openai/gpt-4o-mini`.
+- **Local (optional, limited)** — instead `pip install torch transformers`. No key needed,
+  but extraction is less accurate, and the ~1 GB model downloads on first use.
+
+## Usage
+
+> Pick the right URL: **https://deliverable-scheduler.onrender.com/** for the hosted demo,
+> or **http://localhost:8000** when running locally (`python run.py`). The steps below are
+> identical either way.
+
+1. Open the app (https://deliverable-scheduler.onrender.com/, or http://localhost:8000 if
+   running locally). You'll land on the **Upload** page.
+2. Click **Choose a document** and select `sample-data/project-deliverables.eml` (or drag
+   in any PDF, DOCX, or EML), then click **Extract deadlines**.
+3. You'll be taken to the **Review** page, which lists each extracted deliverable with
+   its due date, confidence, and the sentence that justified it.
+4. For each item, click **Approve** to add it to the calendar, or **Reject** to discard
+   it. Approved items drop off the review list.
+5. Click **Calendar** in the top nav to see the approved events.
+6. From the Calendar page you can:
+   - **Delete** an individual event, or
+   - **Clear all events** to start over.
+7. Try the error handling:
+   - Upload `sample-data/unsupported-format-example.md` → an "Unsupported file type"
+     message is shown.
+   - Click **Extract deadlines** with no file selected → a "Please choose a file"
+     message is shown.
 
 ## Dependencies
 
