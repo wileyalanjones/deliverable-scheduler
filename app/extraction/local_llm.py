@@ -37,7 +37,7 @@ class LocalLLMExtractor(Extractor):
             str,
             pipe(
                 messages,
-                max_new_tokens=1000,
+                max_new_tokens=2048,
                 do_sample=False,
                 return_full_text=False,
             )[0]["generated_text"],
