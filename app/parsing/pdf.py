@@ -1,7 +1,7 @@
-import fitz 
+import pymupdf
 
 def extract(data: bytes) -> str:
-    doc = fitz.open(stream=data, filetype="pdf")
+    doc = pymupdf.open(stream=data, filetype="pdf")
     try:
         pages = []
         for page in doc:

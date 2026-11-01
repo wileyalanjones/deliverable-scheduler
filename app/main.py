@@ -152,3 +152,15 @@ def reject(item_id: int):
     db.close()
 
     return RedirectResponse("/review", status_code=303)
+
+
+@app.post("/calendar/clear")
+def clear_calendar():
+    calendar.clear()
+    return RedirectResponse("/calendar", status_code=303)
+
+
+@app.post("/calendar/events/{event_id}/delete")
+def delete_event(event_id: str):
+    calendar.delete_event(event_id)
+    return RedirectResponse("/calendar", status_code=303)
